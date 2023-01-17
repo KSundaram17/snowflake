@@ -1,0 +1,18 @@
+--create a stage object
+CREATE OR REPLACE STAGE EXERCISE_DB.PUBLIC.UNSTRUCTURED_STAGE
+url = 's3://snowflake-assignments-mc/unstructureddata/';
+
+--create file format
+CREATE OR REPLACE FILE FORMAT EXERCISE_DB.PUBLIC.UNSTRUCTURED_FILE_FORMAT
+TYPE= JSON;
+
+--create a table 
+CREATE OR REPLACE TABLE EXERCISE_DB.PUBLIC.JSON_RAW(
+raw variant);
+
+--copy the raw data in the JSON_RAW table using file format and stage object
+COPY INTO EXERCISE_DB.PUBLIC.JSON_RAW
+from @EXERCISE_DB.PUBLIC.UNSTRUCTURED_STAGE
+file_format = (FORMAT_NAME=EXERCISE_DB.PUBLIC.UNSTRUCTURED_FILE_FORMAT);
+
+select * from EXERCISE_DB.PUBLIC.JSON_RAW;
